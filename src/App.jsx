@@ -11,11 +11,17 @@ function App() {
 
   const [beers, setBeers] = useState([]);
   const [reload, setReload] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
   
   useEffect(() => {
     const beersList = async () => {
-      const beers = await beersServices.getListBeers();
-      setBeers(beers);
+      try {
+        const beers = await beersServices.getListBeers();
+        setBeers(beers);
+        
+      } catch (error) {
+        console.log('Error en el listado', error.message)
+      }
     };
 
     beersList();
@@ -24,9 +30,17 @@ function App() {
   const handleReload = () => setReload((reload) => !reload);
 
   const handleSubmitBeer = async (data) => {
-    await beersServices.setBeerNew(data);
-    handleReload();
-    navigate('/');
+    try {
+      await beersServices.setBeerNew(data);
+      handleReload();
+      navigate('/');
+
+    } catch (error) {
+      if (error.response?.status === 500) {
+        console.error('Error en BeerNew', error.message);
+        setErrorMessage(`Error en BeerNew ${ error.message }`);
+      }
+    }
   };
 
   return (
@@ -37,7 +51,14 @@ function App() {
         <Route path="/" element={ <HomePage /> } />
         <Route path="/beers" element={<AllBeersPage  items={ beers } />} />
         <Route path="/random-beer" element={<RandomBeerPage />} />
-        <Route path="/new-beer" element={<AddBeerPage onSubmitBeer={ handleSubmitBeer } />} />
+        <Route path="/new-beer" element=
+          { 
+            <AddBeerPage 
+              onSubmitBeer={ handleSubmitBeer } 
+              errorMessage={ errorMessage } 
+            />
+          } 
+        />
         <Route path="/beers/:beerId" element={<BeerDetailsPage />} />
       </Routes>
     </div>

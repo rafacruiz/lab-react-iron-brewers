@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 
-function AddBeer({ onSubmitBeer = () => {} }) {
+function AddBeer({ onSubmitBeer = () => {}, errorMessage }) {
   
   const validations = {
     attenuation_level: {
@@ -23,6 +23,11 @@ function AddBeer({ onSubmitBeer = () => {} }) {
 
   return (
     <>
+      { errorMessage && 
+        (<div className="alert alert-danger" role="alert">
+          { errorMessage }
+        </div> )}
+
       <div className="d-inline-flex flex-column w-100 p-4">
         <form onSubmit={handleSubmit(handleSubmitForm)}>
           <label>Name</label>

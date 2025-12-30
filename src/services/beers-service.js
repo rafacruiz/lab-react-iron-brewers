@@ -19,28 +19,16 @@ apiBeer.interceptors.response.use(
 );
 
 export async function getListBeers() {
-    try {
-        return await apiBeer.get('/beers');
-    } catch (error) {
-        console.error('Error en getListBeers: ', error);
-    }
+    return await apiBeer.get('/beers');
 }
 
 export async function getBeerId(id) {
-    try {
-        return await apiBeer.get(`/beers/${ id }`);
-    } catch (error) {
-        console.error('Error en getBeerId: ', error);
-    }
+    return await apiBeer.get(`/beers/${ id }`);
 }
 
 export async function setBeerNew(data) {
-    try {
-        return await apiBeer.post(
-            '/beers/new', 
-            data,
-        );
-    } catch (error) {
-        console.error('Error en setBeerNew: ', error);
-    }
+    return await apiBeer.post(
+        '/beers/new', 
+        data,
+    );
 }

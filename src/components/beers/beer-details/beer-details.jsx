@@ -11,8 +11,12 @@ function BeerDetails({ id }) {
 
   useEffect(() => {
     const beerId = async (id) => {
-      const beer = await beersService.getBeerId(id);
-      setBeer(beer);
+      try {
+        const beer = await beersService.getBeerId(id);
+        setBeer(beer);
+      } catch (error) {
+        console.error('Error en details ', error.message)
+      }
     };
     
     beerId(id);
