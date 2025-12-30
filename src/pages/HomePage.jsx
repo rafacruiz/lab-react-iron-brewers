@@ -4,7 +4,7 @@ import { PageLayout } from "../components/layout";
 function HomePage () {
   return (
     <PageLayout>
-       <Home />
+      <Home />
     </PageLayout>
   );
 }

@@ -1,10 +1,10 @@
 import { AllBeers } from "../components/beers";
 import { PageLayout } from "../components/layout";
 
-function AllBeersPage () {
+function AllBeersPage ({ items }) {
   return (
     <PageLayout>
-      <AllBeers />
+      <AllBeers items={ items } />
     </PageLayout>
   );
 }

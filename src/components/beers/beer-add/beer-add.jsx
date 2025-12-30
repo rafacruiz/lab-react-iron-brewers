@@ -1,98 +1,76 @@
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 
-function AddBeer() {
-  // State variables to store the values of the form inputs. You can leave these as they are.
-  const [name, setName] = useState("");
-  const [tagline, setTagline] = useState("");
-  const [description, setDescription] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
-  const [firstBrewed, setFirstBrewed] = useState("");
-  const [brewersTips, setBrewersTips] = useState("");
-  const [attenuationLevel, setAttenuationLevel] = useState(0);
-  const [contributedBy, setContributedBy] = useState("");
+function AddBeer({ onSubmitBeer = () => {} }) {
+  
+  const validations = {
+    attenuation_level: {
+      min: { value: 1, message: 'Debe ser mayor que 0' },
+      max: { value: 100, message: 'Debe ser menor que 100' }
+    },
+  };
 
-  // Handler functions for the form inputs. You can leave these as they are.
-  const handleName = (e) => setName(e.target.value);
-  const handleTagline = (e) => setTagline(e.target.value);
-  const handleDescription = (e) => setDescription(e.target.value);
-  const handleImageUrl = (e) => setImageUrl(e.target.value);
-  const handleFirstBrewed = (e) => setFirstBrewed(e.target.value);
-  const handleBrewersTips = (e) => setBrewersTips(e.target.value);
-  const handleAttenuationLevel = (e) => setAttenuationLevel(e.target.value);
-  const handleContributedBy = (e) => setContributedBy(e.target.value);
+  const {
+    register, 
+    handleSubmit, 
+    formState: { errors, isValid }, 
+    reset 
+  } = useForm({ mode: 'all' });
 
+  const handleSubmitForm = async (data) => {
+    reset();
+    onSubmitBeer(data);
+  };
 
-
-  // TASK:
-  // 1. Create a function to handle the form submission and send the form data to the Beers API to create a new beer.
-  // 2. Use axios to make a POST request to the Beers API.
-  // 3. Once the beer is created, navigate the user to the page showing the list of all beers.
-
-
-
-  // Structure and the content of the page showing the form for adding a new beer. You can leave this as it is.
   return (
     <>
       <div className="d-inline-flex flex-column w-100 p-4">
-        <form>
+        <form onSubmit={handleSubmit(handleSubmitForm)}>
           <label>Name</label>
           <input
             className="form-control mb-4"
             type="text"
-            name="name"
             placeholder="Beer Name"
-            value={name}
-            onChange={handleName}
+            {...register('name')}
           />
           <label>Tagline</label>
           <input
             className="form-control mb-4"
             type="text"
-            name="tagline"
             placeholder="Beer Tagline"
-            value={tagline}
-            onChange={handleTagline}
+            {...register('tagline')}
           />
 
           <label className="form-label">Description</label>
           <textarea
             className="form-control mb-4"
             type="text"
-            name="description"
             placeholder="Description"
             rows="3"
-            value={description}
-            onChange={handleDescription}
+            {...register('description')}
           ></textarea>
 
           <label>Image</label>
           <input
             className="form-control mb-4"
             type="text"
-            name="imageUrl"
             placeholder="Image URL"
-            value={imageUrl}
-            onChange={handleImageUrl}
+            {...register('image_url')}
           />
 
           <label>First Brewed</label>
           <input
             className="form-control mb-4"
             type="text"
-            name="firstBrewed"
             placeholder="Date - MM/YYYY"
-            value={firstBrewed}
-            onChange={handleFirstBrewed}
+            {...register('first_brewed')}
           />
 
           <label>Brewer Tips</label>
           <input
             className="form-control mb-4"
             type="text"
-            name="brewersTips"
             placeholder="..."
-            value={brewersTips}
-            onChange={handleBrewersTips}
+            {...register('brewers_tips')} 
           />
 
           <label>Attenuation Level</label>
@@ -103,26 +81,26 @@ function AddBeer() {
               </span>
             </div>
             <input
-              className="form-control mb-4"
+              className={`form-control mb-4 ${errors.attenuation_level ? 'is-invalid' : ''}`}
               type="number"
-              name="attenuationLevel"
-              value={attenuationLevel}
-              onChange={handleAttenuationLevel}
+              {...register('attenuation_level', validations.attenuation_level)}
               min={0}
               max={100}
             />
+            {errors.attenuation_level && (
+              <div className="invalid-feedback"> {
+                errors.attenuation_level.message
+              }</div>)}
           </div>
 
           <label>Contributed By</label>
           <input
             className="form-control mb-4"
             type="text"
-            name="contributedBy"
             placeholder="Contributed by"
-            value={contributedBy}
-            onChange={handleContributedBy}
+            {...register('contributed_by')}
           />
-          <button className="btn btn-primary btn-round">Add Beer</button>
+          <button  type='submit' className="btn btn-primary btn-round" disabled={!isValid} >Add Beer</button>
         </form>
       </div>
     </>

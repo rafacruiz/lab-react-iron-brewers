@@ -32,5 +32,15 @@ export async function getBeerId(id) {
     } catch (error) {
         console.error('Error en getBeerId: ', error);
     }
-    
+}
+
+export async function setBeerNew(data) {
+    try {
+        return await apiBeer.post(
+            '/beers/new', 
+            data,
+        );
+    } catch (error) {
+        console.error('Error en setBeerNew: ', error);
+    }
 }

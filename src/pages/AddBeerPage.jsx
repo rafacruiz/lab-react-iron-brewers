@@ -1,10 +1,10 @@
 import { AddBeer } from '../components/beers';
 import { PageLayout } from '../components/layout'
 
-function AddBeerPage () {
+function AddBeerPage ({ onSubmitBeer }) {
   return (
     <PageLayout>
-      <AddBeer />
+      <AddBeer onSubmitBeer={ onSubmitBeer }/>
     </PageLayout>
   );
 }

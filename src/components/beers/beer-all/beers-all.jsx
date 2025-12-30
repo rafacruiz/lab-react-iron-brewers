@@ -1,30 +1,15 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-
-import * as beersServices from './../../../services/beers-service';
 import { SearchBeer } from "..";
 
-
-function AllBeers() {
+function AllBeers({ items }) {
   
-  const [beers, setBeers] = useState([]);
-
-  useEffect(() => {
-    const beersList = async () => {
-      const beers = await beersServices.getListBeers();
-      setBeers(beers);
-    };
-
-    beersList();
-  }, []);
-
   return (
     <>
       <SearchBeer />
 
       <div className="d-inline-flex flex-wrap justify-content-center align-items-center w-100 p-4">
-        {beers &&
-          beers.map((beer, i) => {
+        {items &&
+          items.map((beer, i) => {
             return (
               <div key={ beer._id }>
                 <Link to={"/beers/" + beer._id}>
