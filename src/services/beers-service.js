@@ -26,6 +26,10 @@ export async function getBeerId(id) {
     return await apiBeer.get(`/beers/${ id }`);
 }
 
+export async function getRandomBeer() {
+    return await apiBeer.get('/beers/random');
+}
+
 export async function setBeerNew(data) {
     return await apiBeer.post(
         '/beers/new', 
